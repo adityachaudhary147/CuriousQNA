@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+Register Yourself here 
+<form action="" method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" name="register" value="Register" />
+</form>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+Welcome,
+{{userdetail.username}}
+<div class="container">
+
+  {% for x,z in main.items %}
+  <div class=" inner container red" style="margin-top: 30px; margin-bottom: 20px;">
+    Question {{x.id}} - <a href="../../core/question/{{x.id}}">{{ x.title }}</a> <a href="../../core/answer/{{x.id}}"> Add
+      Answer</a>
+    <br>
+  </div>
+
+    {% for y,stats in z.items %}
+
+    <div class="container inner " style="margin-left: 20px;">
+      <div class="row">Answer by {{ y.user.username }}</div>
+     
+    
+    <span id="like{{y.id}}">
+      {% if stats %}
+      <style>
+        #like{{y.id}}light {
+          display: none;
+        }
+      </style>
+      {% else %}
+      <style>
+        #like{{y.id}}dark {
+          display: none;
+        }
+      </style>
+      {% endif %}
+    <div class="row" style="text-align: right;"> 
+        <span id="like{{y.id}}light">♡</span>
+      
+        <span id="like{{y.id}}dark">❤️</span>
+    
+        <span id="like{{y.id}}st" name="{{y.id}}"> Liked by {{ y.count_likes }} </span>
+    </div>
+    <br>
+    <p>{{ y.answer_text }} </p>
+    <script text="javascript">
+      $(document).ready(function () {
+
+        $('#like{{y.id}}').click(function () {
+          $.ajax(
+            {
+
+              type: "POST",
+              url: "{% url 'ans-like' %}",
+              data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'pk': '{{ y.id }}' },
+
+              success: function (response) {
+                console.log("hjk");
+                // alert(response.message);
+                // alert('Company likes count is now ' + response.likes_count);
+                console.log("ctx");
+                console.log(response);
+                console.log(response.ctx);
+                $('#like{{y.id}}st').html("Liked by " + response.ctx);
+                console.log(response.sta);
+                if (response.sta) {
+                  $("#like{{y.id}}light").hide();
+                  $("#like{{y.id}}dark").show();
+                }
+                else {
+                  $("#like{{y.id}}dark").hide();
+                  $("#like{{y.id}}light").show();
+                }
+
+                // alert("You liked a ans ")
+
+              },
+              error: function (rs, e) {
+                console.log("hh");
+                // alert(rs.responseText);
+
+              }
+            }
+          );
+        }
+        )
+      });
+    </script>
+    <br>
+  </div>
+{% endfor %}
+
+{% endfor %}
+
+</div>
+
+
+
+<br />
+
+{% endblock %}

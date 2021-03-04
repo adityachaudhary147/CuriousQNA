@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>NITJ QNA</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+
+        body {
+            text-align: justify;
+            background-color: #202124;
+            color: white;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .container a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .hv :hover {
+            color: tomato !important;
+        }
+
+        .navbar {
+            background-color: #202124;
+        }
+
+        .custom-toggler.navbar-toggler {
+            color: rgb(255, 102, 203);
+        }
+
+        .bg-dark {
+            background-color: #202124 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header ">
+        <div class="container hv">
+            <div class="row">
+                <div class="col-md-3 col-5">
+                    <div class="hv p-2">
+                        <h3><a href='{% url "dashboard-view" %}' aria-label="NITJQNA">
+                                <!-- <img src="" alt="Naval" class="img-fluid"> -->
+                                Curious </a></h3>
+                    </div>
+                </div>
+                <div class="col-md-9 col-7 right-part">
+                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+                        <div class="container-fluid">
+                            <!-- <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button> -->
+                            <div class="navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+                                <div class="navbar-nav">
+                                    {% if request.user.id %}
+                                    <a class="nav-link active" aria-current="page" href='{% url "question-view" %}'>Ask</a>
+                                    <a class="nav-link active" aria-current="page" href='{% url "logout-view" %}'>Logout</a>
+                                    {% else %}
+                                    <a class="nav-link active" aria-current="page" href='{% url "login-view" %}'>Login</a>
+                                    <a class="nav-link active" href='{% url "register-view" %}'>Sign UP </a>
+                                    {% endif %}
+                                    
+                                    <a class="nav-link active" href='{% url "about-view" %}'>About</a>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <div class="main-site" style="margin-top: 40px;">
+    <div class="container ">
+        {% block content %}
+        {% endblock %}
+    
+    </div>
+    </div>
+
+</body>
+
+</html>

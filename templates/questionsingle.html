@@ -1,0 +1,20 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<br>
+
+Welcome,
+{{request.user.username}}
+<br />
+Asked Questions.
+<br />
+
+Question-- <a href="../../core/question/{{ques.id}}">{{ ques.title }}</a> <a href="../../core/answer/{{ques.id}}"> Add Answer</a>
+<br>
+{% for y in ans %}
+Answer--
+{{ y.answer_text }} by {{ y.user.username }}
+<br>
+{% endfor %}
+{% endblock %}
