@@ -1,15 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% load crispy_forms_tags %}
 
 
-Register Yourself here 
+
 <form action="" method="POST">
     {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" name="register" value="Register" />
+    <!-- <div class="container">
+    {{ form.email|as_crispy_field }}    
+    {{ form.username|as_crispy_field }}
+    {{ form.first_name|as_crispy_field }}
+    {{ form.last_name|as_crispy_field }}
+    {{ form.password|as_crispy_field}}
+    <button type="submit" class="btn btn-success">Register</button>
+    </div> -->
+    <div class="container">
+    {% for field in form %}
+    <div class="container">
+        {{ field.errors}}
+        {{ field.label_tag}} {{ field}}
+        <!-- {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} -->
+
+    </div>
+    {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-success">Register</button>
+
+
 </form>
 
 {% endblock %}

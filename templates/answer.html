@@ -3,16 +3,26 @@
 {% block content %}
 
 
-Current Question is 
-{{ part_ques.title }}
 <br>
-Enter your answer for the question..
+Enter your answer for the question... <br>
+{{ part_ques.title }}
 <form action="" method="POST">
     {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" name="submit" value="Register" />
+    <div class="container">
+        {% for field in form %}
+        <div class="container">
+            {{ field.errors}}
+            {{ field.label_tag}}
+            <br> {{ field}}
+            <!-- {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %} -->
+    
+        </div>
+        {% endfor %}
+    </div>
+    We are commited to our polices once submitted it can not be undone...<br>
+    <button type="submit" class="btn btn-success">Submit</button>
 </form>
 
 {% endblock %}

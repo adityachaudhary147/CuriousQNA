@@ -7,9 +7,10 @@ Welcome,
 {{userdetail.username}}
 <div class="container">
 
-  {% for x,z in main.items %}
+  {% for x,z in dic_new.items %}
   <div class=" inner container red" style="margin-top: 30px; margin-bottom: 20px;">
-    Question {{x.id}} - <a href="../../core/question/{{x.id}}">{{ x.title }}</a> <a href="../../core/answer/{{x.id}}"> Add
+    
+    Question - <a href="../../core/question/{{x.id}}">{{ x.title }}</a> <a href="../../core/answer/{{x.id}}"> Add
       Answer</a>
     <br>
   </div>
@@ -97,5 +98,25 @@ Welcome,
 
 
 <br />
+<div class="pagination container" style="margin-bottom: 50px;">
+  <span class="step-links ">
+    <span class="current red">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+    <span class="hv">
+    {% if page_obj.has_previous %}
+    <!-- <a href="?page=1">1</a> -->
+    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+    </span>
+
+    {% if page_obj.has_next %}
+    <span class="hv">
+    <a  href="?page={{ page_obj.next_page_number }}">next</a>
+    <!-- <a  href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a> -->
+    {% endif %}
+    </span>
+  </span>
+</div>
 
 {% endblock %}

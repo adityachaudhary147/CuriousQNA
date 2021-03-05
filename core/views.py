@@ -15,6 +15,7 @@ from django.contrib.auth import authenticate
 import json
 from .models import User
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 
 class Home(FormView):
     def get(self,request):
@@ -28,6 +29,7 @@ class DashboardView(FormView):
             user.backend='django.contrib.core.backends.ModelBackend'
             # ques_obj=Question1.objects.filter(user=user)
             ques_obj=Question1.objects.all()
+            ques_obj=reversed(list(ques_obj))
             content['userdetail']=user
             ans=[]
             dic_for_q_ans={}
@@ -39,8 +41,26 @@ class DashboardView(FormView):
                     st_like_by_req_user=we.likes.filter(id=user.id).exists()
                     dict_rnd[we]=st_like_by_req_user
                 dic_for_q_ans[x]=dict_rnd
+            lis_for_p=[]
+            for x in dic_for_q_ans.keys():
+                lis_for_p.append((x,dic_for_q_ans[x]))
+
+            p=Paginator(lis_for_p,3)
+            p_count=p.count
+            content['p']=p
+            page_number=request.GET.get('page')
+            if page_number==None:
+                page_number=1
+            page_obj=p.page(page_number)
+            content['page_obj']=page_obj
+            dic_new_for_final={}
+            for p in page_obj:
+                dic_new_for_final[p[0]]=p[1]
+            content['dic_new']=dic_new_for_final
             content['main']=dic_for_q_ans
             content['request']=request
+            content['p_count']=p_count
+            content['is_paginated']=True
             return render(request,'dashboard.html',content)
         else:
             return redirect(reverse('login-view'))
@@ -110,8 +130,8 @@ class LoginView(FormView):
         except Exception as e:
             content = {}
             content['form'] = LoginForm
-            content['error'] = 'Unable to login with provided credentials' + e
-            return render_to_response('login.html', content)
+            content['error'] = 'Unable to login with provided credentials' + str(e)
+            return render(request,'login.html',content)
 
 class QuestionView(FormView):
 
@@ -136,6 +156,7 @@ class QuestionView(FormView):
             ques=form.save(commit=False)
             ques.user=request.user
             ques.save()
+            return redirect(reverse('dashboard-view'))
         content['form']=Question1Form()
         return render(request,'question.html',content)
 
@@ -168,6 +189,7 @@ class AnswerView(FormView):
             content['part_ques']=part_ques
             ans.question=qs[0]
             ans.save()
+            return redirect(reverse("dashboard-view"))
         content['form']=AnswersForm()
         return render(request,'answer.html',content)
 
